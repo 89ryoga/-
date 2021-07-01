@@ -1,50 +1,20 @@
-//FactoryMethodを利用
 public class Client {
     public static void main(String[] args) {
-        Koujyou koujyou1 = new TvKoujyou();
-        Koujyou koujyou2 = new RadioKoujyou();
-        Seihin[] array = new Seihin[3];
-        array[0] = koujyou1.create();
-        array[1] = koujyou2.create();
-        array[2] = koujyou1.create();
-        for (int i = 0; i < array.length; ++i) {
-            array[i].print();
+        Seihin[] seihins = new Seihin[3];
+        seihins[0] = new Television();
+        seihins[1] = new Radio();
+        seihins[2] = new Television();
+        for (int i = 0; i < seihins.length; ++i) {
+            if (seihins[i] instanceof Television) {
+                ((Television) seihins[i]).numberring();
+                ((Television) seihins[i]).setDate(Date.today());
+            } else if (seihins[i] instanceof Radio) {
+                ((Radio) seihins[i]).numberring();
+            }
         }
-    }
-}
-
-abstract class Koujyou {
-    public final Seihin create() {
-        Seihin seihin = factoryMethod();
-        touroku(seihin);
-        return seihin;
-    }
-
-    public abstract Seihin factoryMethod();
-
-    public abstract void touroku(Seihin s);
-}
-
-class TvKoujyou extends Koujyou {
-    public Seihin factoryMethod() {
-        return new Television();
-    }
-
-    public void touroku(Seihin s) {
-        Television t = (Television) s;
-        t.numberring();
-        t.setDate(Date.today());
-    }
-}
-
-class RadioKoujyou extends Koujyou {
-    public Seihin factoryMethod() {
-        return new Radio();
-    }
-
-    public void touroku(Seihin s) {
-        Radio r = (Radio) s;
-        r.numberring();
+        for (int i = 0; i < seihins.length; ++i) {
+            seihins[i].print();
+        }
     }
 }
 
