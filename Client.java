@@ -1,3 +1,4 @@
+//FactoryMethodを利用
 public class Client {
     public static void main(String[] args) {
         Koujyou koujyou1 = new TvKoujyou();
