@@ -1,86 +1,27 @@
-import java.util.ArrayList;
-
 public class Client {
     public static void main(String[] args) {
-        Suuchi s = new Suuchi();
-        Observer o1 = new NishinHyouji();
-        Observer o2 = new JyuurokushinHyouji();
-        s.attach(o1);
-        s.attach(o2);
-        int i = 0;
-        while (i < 100) {
-            s.putValue(i);
-            i += (int) (Math.random() * 30) - 10;
+        Dengen dengen;
+        dengen = new AcAdapter();
+        int denatsu = dengen.kyuuden();
+        System.out.println(denatsu + "V で給電されています");
+    }
+}
+
+abstract class Dengen { // Targetクラス
+    public abstract int kyuuden(); // request()メソッド
+}
+
+class JapaneseConsent{
+    public int power(){
+        return 100;
+    }
+}
+
+class AcAdapter extends Dengen{
+    private JapaneseConsent consent = new JapaneseConsent();
+
+    @Override
+    public int kyuuden() {
+        return (int)(consent.power() * 0.16);
         }
-    }
-}
-
-abstract class Subject {
-    public ArrayList<Observer> observers;
-
-    Subject() {
-        observers = new ArrayList<Observer>();
-    }
-
-    public void attach(Observer o) {
-        observers.add(o);
-    }
-
-    public void detach(Observer o) {
-        observers.remove(o);
-    }
-
-    public void tsuuchi() {
-        for (Observer observer : observers) {
-            observer.update(this);
-        }
-    }
-}
-
-class Suuchi extends Subject {
-    boolean suuchiState;
-    int atai;
-
-    public boolean getState() {
-        return suuchiState;
-    }
-
-    public void putValue(int atai) {
-        if (atai > this.atai) {
-            this.atai = atai;
-            this.tsuuchi();
-        } else {
-            System.out.println("確認用メッセージ:更新してません");
-        }
-    }
-
-    public int getValue() {
-        return atai;
-    }
-}
-
-interface Observer {
-    public void update(Subject s);
-}
-
-class NishinHyouji implements Observer {
-    public void update(Subject s) {
-        print(((Suuchi) s).getValue());
-    }
-
-    private void print(int n) {
-        System.out.println(n + "を2進数で表示します");
-        System.out.println ( Integer.toBinaryString (n) );
-    }
-}
-
-class JyuurokushinHyouji implements Observer {
-    public void update(Subject s) {
-        print(((Suuchi) s).getValue());
-    }
-
-    private void print(int n) {
-        System.out.println(n + "を 16 進数で表示します");
-        System.out.println ( Integer.toHexString (n) );
-    }
 }
